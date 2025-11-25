@@ -22,10 +22,10 @@ const navList = [
     link: "#contact",
     text: "Contact Us",
   },
-  {
-    link: "/blogs",
-    text: "News From ASMC",
-  },
+  // {
+  //   link: "/blogs",
+  //   text: "News From ASMC",
+  // },
 ];
 
 export default function Navbar () {
