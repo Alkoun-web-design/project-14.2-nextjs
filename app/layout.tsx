@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/index";
 import Footer from "@/components/Footer/index";
-import DarkModeToggle from "@/components/DarkModeToggle.jsx";
+// import DarkModeToggle from "@/components/DarkModeToggle.jsx";
 import React from "react";
 
 const geistSans = Geist({
@@ -24,7 +24,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         <Navbar />
         {children}
         <Footer />
-        <DarkModeToggle />
+        {/* <DarkModeToggle /> */}
       </body>
     </html>
   );

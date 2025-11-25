@@ -1,13 +1,9 @@
 "use client"
 
-// import logo from "../../assets/images/logo/logo.svg";
-// import logoWhite from "../../assets/images/logo/logo-white.svg";
-// import { Link } from "react-router-dom";
-// import PropTypes from "prop-types";
-
 import ClickOutside from "../ClickOutside.jsx";
 import React from "react";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 
 const navList = [
   {
@@ -26,15 +22,17 @@ const navList = [
     link: "#contact",
     text: "Contact Us",
   },
-  // {
-  //   link: "/blogs",
-  //   text: "News From ASMC",
-  // },
+  {
+    link: "/blogs",
+    text: "News From ASMC",
+  },
 ];
 
 export default function Navbar () {
 
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+
+  const pathname = usePathname();
 
   const handleNavbarToggle = () => {
     setNavbarOpen(!navbarOpen);
@@ -78,11 +76,11 @@ export default function Navbar () {
             <div>
               <button
                 onClick={handleNavbarToggle}
-                className="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-[#933DE6] focus:ring-2 lg:hidden"
+                className="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-1.5 ring-[#933DE6] focus:ring-2 lg:hidden"
               >
-                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
-                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
-                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
+                <span className="relative my-1.5 block h-0.5 w-[30px] bg-body-color dark:bg-white"></span>
+                <span className="relative my-1.5 block h-0.5 w-[30px] bg-body-color dark:bg-white"></span>
+                <span className="relative my-1.5 block h-0.5 w-[30px] bg-body-color dark:bg-white"></span>
               </button>
 
               <ClickOutside onClick={() => setNavbarOpen(false)}>
@@ -94,7 +92,7 @@ export default function Navbar () {
                       <li key={index}>
                         <Link
                           href={item.link}
-                          className="rounded-md px-2 py-1 flex text-base font-medium text-dark dark:text-white dark:hover:text-[#FCCD57] lg:ml-5 lg:inline-flex hover:bg-[#933DE6] hover:text-[#FCCD57] transition-all duration-300"
+                          className={`rounded-md px-2 py-1 flex text-base font-medium text-dark dark:text-white dark:hover:text-[#FCCD57] lg:ml-5 lg:inline-flex hover:bg-[#933DE6] hover:text-[#FCCD57] transition-all duration-300 ${pathname === Link.href ? "text-[#FCCD57]" : "text-text-dark dark:text-white"}`}
                         >
                           {item.text}
                         </Link>
