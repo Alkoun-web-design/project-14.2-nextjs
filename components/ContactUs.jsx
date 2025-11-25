@@ -1,3 +1,7 @@
+"use client"
+
+import React from 'react';
+
 const contactList = [
   {
     icon: (
@@ -76,28 +80,81 @@ const contactList = [
 
 const formItems = [
   {
+    name: "firstName",
     type: "text",
     placeholder: "Enter your first name",
   },
   {
+    name: "lastName",
     type: "text",
     placeholder: "Enter your last name",
   },
   {
+    name: "email",
     type: "email",
     placeholder: "Enter your Email",
   },
   {
+    name: "phone",
     type: "text",
     placeholder: "Enter your number",
   },
   {
+    name: "message",
     type: "textarea",
     placeholder: "Type your message here  ",
   },
 ];
 
 const ContactUs = () => {
+
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [loading, setLoading] = React.useState(false);
+  const [responseMessage, setResponseMessage] = React.useState(null);
+
+  function handleChange(e){
+    const {name, value} = e.target;
+    setFormData(prevData => ({
+      ...prevData, [name]: value
+    }));
+    console.log(formData);
+  };
+
+  async function handleSubmit(e){
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch('https://apexsynergy.com/email.php', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      setResponseMessage(data.message);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    } catch (error) {
+      setResponseMessage('Form could not be submitted. Please try again later.')
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <section id="contact" className="overflow-hidden py-24 dark:bg-dark">
@@ -135,14 +192,18 @@ const ContactUs = () => {
           <div className="-mx-4 flex flex-wrap justify-center">
             <div className="w-full px-4 lg:w-7/12 xl:w-6/12">
               <div className="mb-12 lg:mb-0 lg:mr-4">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="-mx-4 flex flex-wrap">
                     {formItems.map((item, index) =>
                       item.type === "textarea" ? (
                         <div key={index} className="w-full px-4">
                           <div className="mb-7">
                             <textarea
+                              disabled={loading}
                               placeholder={item.placeholder}
+                              name={item.name}
+                              value=''
+                              onChange={handleChange}
                               rows="6"
                               className="w-full resize-none border border-stroke bg-transparent px-5 py-[17px] text-body-color outline-none focus:border-[#933DE6] dark:border-dark-3 dark:text-dark-6 dark:focus:border-[#933DE6]"
                             ></textarea>
@@ -152,8 +213,11 @@ const ContactUs = () => {
                         <div key={index} className="w-full px-4 md:w-1/2">
                           <div className="mb-7">
                             <input
+                              disabled={loading}
                               type={item.type}
                               placeholder={item.placeholder}
+                              name={item.name}
+                              onChange={handleChange}
                               className="w-full border border-stroke bg-transparent px-5 py-[17px] text-body-color outline-none focus:border-[#933DE6] dark:border-dark-3 dark:text-dark-6 dark:focus:border-[#933DE6]"
                             />
                           </div>
@@ -165,12 +229,14 @@ const ContactUs = () => {
                       <div>
                         <button
                           type="submit"
+                          disabled={loading}
                           className="inline-flex items-center justify-center border border-transparent bg-[#933DE6] px-7 py-3 text-base font-medium text-white hover:bg-opacity-90"
                         >
-                          Submit Message
+                          {loading ? 'Sending... ': 'Submit Message'}
                         </button>
                       </div>
                     </div>
+                    {responseMessage ? responseMessage : ''}
                   </div>
                 </form>
               </div>
